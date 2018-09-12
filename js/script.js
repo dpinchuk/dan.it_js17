@@ -14,7 +14,7 @@
 
 let checkColor = (color) => {
     let regColor = /#[a-f0-9]{3}|#[a-f0-9]{6}|red|aqua|gray|navy|silver|black|green|olive|teal|blue|lime|purple|white|fuchsia|maroon|yellow|rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+(?:\s*,\s*[\d.]+\s*)?\)/i;
-    if (!regColor.test(color)) {
+    if (!regColor.test(color) || color === null || color === "") {
         console.log("Color is invalid! Color = '#000000'");
         return "#000000";
     }
@@ -23,7 +23,7 @@ let checkColor = (color) => {
 
 let checkDiameter = (diameter) => {
     let regDiameter = /^(\d){1,3}$/g;
-    if (!regDiameter.test(Number(diameter))) {
+    if (!regDiameter.test(diameter) || diameter === null || isNaN(diameter) || diameter === 0) {
         console.log("Diameter is invalid! Diameter = '250px'");
         return "250";
     }
@@ -44,8 +44,8 @@ $(function () {
 $('body').on('click', '#btnDraw', function () {
     let formData = $('#forma').serializeArray();
 
-    let diameter = checkDiameter(formData[0].value);
-    let color = checkColor(formData[1].value.toLowerCase());
+    let diameter = checkDiameter(Number(formData[0].value.trim()));
+    let color = checkColor(formData[1].value.toLowerCase().trim());
 
     $('#drawDiv').empty().append(
         "<div style='width: " + diameter +  "px; height: " + diameter + "px; border-radius: 50%; background-color: " + color + ";'></div>"
